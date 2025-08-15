@@ -1,0 +1,17 @@
+{
+  "npc1": {"name": "Ariana", "job": "farmer", "level": 5, "exp": 40, "skills": ["gather", "farm", "craft"], "house": "house1", "party": "party1", "morale": 1.1, "loyalty": 1.0},
+  "npc2": {"name": "Bran", "job": "soldier", "level": 7, "exp": 90, "skills": ["combat", "defend", "lead"], "house": "house2", "party": "party2", "morale": 1.05, "loyalty": 1.2},
+  "npc3": {"name": "Clara", "job": "merchant", "level": 4, "exp": 20, "skills": ["trade", "negotiation"], "house": "house3", "party": "party3", "morale": 1.2, "loyalty": 1.0},
+  "npc4": {"name": "Diana", "job": "mage", "level": 6, "exp": 60, "skills": ["magic", "cast", "research"], "house": "house4", "party": "party4", "morale": 1.08, "loyalty": 1.0},
+  "npc5": {"name": "Eli", "job": "healer", "level": 3, "exp": 10, "skills": ["heal", "medicine"], "house": "house5", "party": "party4", "morale": 1.0, "loyalty": 1.0},
+  "npc6": {"name": "Fenn", "job": "hunter", "level": 5, "exp": 70, "skills": ["hunt", "track"], "house": "house6", "party": "party5", "morale": 1.1, "loyalty": 1.1},
+  "npc7": {"name": "Gale", "job": "miner", "level": 4, "exp": 30, "skills": ["mine", "gather"], "house": "house7", "party": "party5", "morale": 1.0, "loyalty": 0.95},
+  "npc8": {"name": "Hana", "job": "blacksmith", "level": 5, "exp": 55, "skills": ["forge", "craft"], "house": "house8", "party": "party2", "morale": 1.15, "loyalty": 1.0},
+  "npc9": {"name": "Ivan", "job": "explorer", "level": 4, "exp": 15, "skills": ["explore", "track"], "house": "house9", "party": "party1", "morale": 1.06, "loyalty": 1.0},
+  "npc10": {"name": "Juna", "job": "trainer", "level": 6, "exp": 70, "skills": ["train", "lead"], "house": "house10", "party": "party3", "morale": 1.1, "loyalty": 1.05},
+  "npc11": {"name": "Karl", "job": "merchant", "level": 5, "exp": 40, "skills": ["trade", "negotiation"], "house": "house11", "party": "party3", "morale": 1.15, "loyalty": 1.0},
+  "npc12": {"name": "Lina", "job": "farmer", "level": 3, "exp": 20, "skills": ["farm", "gather"], "house": "house12", "party": "party1", "morale": 1.0, "loyalty": 1.0},
+  "npc13": {"name": "Milo", "job": "soldier", "level": 5, "exp": 60, "skills": ["combat", "defend"], "house": "house13", "party": "party2", "morale": 1.10, "loyalty": 1.1},
+  "npc14": {"name": "Nina", "job": "healer", "level": 4, "exp": 35, "skills": ["heal", "medicine"], "house": "house14", "party": "party4", "morale": 1.07, "loyalty": 1.02},
+  "npc15": {"name": "Odin", "job": "blacksmith", "level": 6, "exp": 80, "skills": ["forge", "craft"], "house": "house15", "party": "party5", "morale": 1.18, "loyalty": 1.0}
+}

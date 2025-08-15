@@ -1,0 +1,8 @@
+{
+    "wood": {"desc": "Gỗ, dùng để xây dựng."},
+    "food": {"desc": "Lương thực, duy trì NPC."},
+    "stone": {"desc": "Đá, dùng xây công trình."},
+    "iron": {"desc": "Sắt, chế tạo công cụ/vũ khí."},
+    "herbs": {"desc": "Thảo dược, dùng để chế thuốc."},
+    "mana": {"desc": "Tinh thể phép thuật, nâng cấp công trình."}
+}

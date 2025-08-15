@@ -1,0 +1,13 @@
+{
+  "farmer": {"name": "Nông dân", "desc": "Trồng trọt, thu hoạch", "base_skill": ["gather", "farm"], "unlock_level": 1},
+  "soldier": {"name": "Lính", "desc": "Phòng thủ, chiến đấu", "base_skill": ["combat", "defend"], "unlock_level": 2},
+  "merchant": {"name": "Thương nhân", "desc": "Buôn bán, giao thương", "base_skill": ["trade", "negotiation"], "unlock_level": 3},
+  "mage": {"name": "Pháp sư", "desc": "Phép thuật", "base_skill": ["magic", "cast"], "unlock_level": 4},
+  "healer": {"name": "Thầy thuốc", "desc": "Chữa bệnh", "base_skill": ["heal", "medicine"], "unlock_level": 3},
+  "hunter": {"name": "Thợ săn", "desc": "Săn bắt, dò tìm", "base_skill": ["hunt", "track"], "unlock_level": 2},
+  "miner": {"name": "Thợ mỏ", "desc": "Khai khoáng", "base_skill": ["mine", "gather"], "unlock_level": 3},
+  "blacksmith": {"name": "Thợ rèn", "desc": "Chế tạo vũ khí", "base_skill": ["forge", "craft"], "unlock_level": 4},
+  "explorer": {"name": "Nhà thám hiểm", "desc": "Khám phá vùng đất mới", "base_skill": ["explore", "track"], "unlock_level": 2},
+  "trainer": {"name": "Huấn luyện viên", "desc": "Huấn luyện kỹ năng", "base_skill": ["train", "lead"], "unlock_level": 4},
+  "hero": {"name": "Hero", "desc": "Chiến binh huyền thoại", "base_skill": ["lead", "combat", "special"], "unlock_level": 5}
+}

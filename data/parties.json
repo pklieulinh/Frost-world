@@ -1,0 +1,7 @@
+{
+  "party1": {"name": "Đội Thám Hiểm", "members": ["npc1", "npc9", "npc12", "hero3"], "quest": "find_treasure", "status": "active"},
+  "party2": {"name": "Đội Cảnh Vệ", "members": ["npc2", "npc8", "npc13", "hero1"], "quest": "defend_village", "status": "active"},
+  "party3": {"name": "Đội Thương Nhân", "members": ["npc3", "npc10", "npc11", "hero4"], "quest": "escort", "status": "idle"},
+  "party4": {"name": "Đội Phép Thuật", "members": ["npc4", "npc5", "npc14", "hero2"], "quest": "research_magic", "status": "idle"},
+  "party5": {"name": "Đội Săn Bắn", "members": ["npc6", "npc7", "npc15", "hero5"], "quest": "slay_monster", "status": "active"}
+}

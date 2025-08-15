@@ -1,0 +1,17 @@
+{
+    "raise_food_ration": {
+        "name": "Tăng khẩu phần ăn",
+        "desc": "Phân phát nhiều lương thực hơn, giảm bất mãn.",
+        "effects": {"discontent": -0.15}
+    },
+    "reduce_work": {
+        "name": "Giảm giờ làm",
+        "desc": "NPC làm việc ít hơn, tăng hạnh phúc.",
+        "effects": {"discontent": -0.10, "loyalty": 0.08}
+    },
+    "military_draft": {
+        "name": "Tổng động viên",
+        "desc": "Huy động NPC vào bảo vệ làng, tăng loyalty phe royalist.",
+        "effects": {"loyalty_royalist": 0.10, "discontent_rebel": 0.10}
+    }
+}

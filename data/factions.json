@@ -1,0 +1,5 @@
+{
+    "royalist": {"desc": "Trung thành với thủ lĩnh, ưa ổn định.", "color": [40,160,200], "base_loyalty": 0.7},
+    "progressive": {"desc": "Thích đổi mới, đề xuất nhiều chính sách.", "color": [120,200,80], "base_loyalty": 0.5},
+    "rebel": {"desc": "Hay bất mãn, dễ phản loạn.", "color": [255,80,80], "base_loyalty": 0.3}
+}

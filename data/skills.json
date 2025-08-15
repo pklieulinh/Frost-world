@@ -1,0 +1,23 @@
+{
+  "gather": {"name": "Thu thập", "effect": "Tăng lượng tài nguyên thu hoạch"},
+  "farm": {"name": "Nông nghiệp", "effect": "Tăng sản lượng mùa vụ"},
+  "craft": {"name": "Chế tác", "effect": "Chế tạo đồ vật"},
+  "build": {"name": "Xây dựng", "effect": "Tăng tốc độ xây công trình"},
+  "trade": {"name": "Giao thương", "effect": "Tăng thu nhập từ thương mại"},
+  "negotiation": {"name": "Đàm phán", "effect": "Tăng hiệu quả giao dịch"},
+  "combat": {"name": "Chiến đấu", "effect": "Tăng sức mạnh chiến đấu"},
+  "defend": {"name": "Phòng thủ", "effect": "Tăng khả năng phòng thủ"},
+  "magic": {"name": "Phép thuật", "effect": "Dùng phép tấn công/quái vật"},
+  "cast": {"name": "Thi triển", "effect": "Thi triển phép đặc biệt"},
+  "heal": {"name": "Chữa trị", "effect": "Hồi phục HP cho đồng minh"},
+  "medicine": {"name": "Y thuật", "effect": "Chữa bệnh, tăng sức khỏe"},
+  "hunt": {"name": "Săn bắt", "effect": "Tăng khả năng săn mồi"},
+  "track": {"name": "Dò tìm", "effect": "Tăng khả năng phát hiện đối tượng"},
+  "mine": {"name": "Khai khoáng", "effect": "Tăng lượng khoáng sản"},
+  "forge": {"name": "Rèn", "effect": "Chế tạo vũ khí/giáp"},
+  "lead": {"name": "Lãnh đạo", "effect": "Tăng morale party"},
+  "special": {"name": "Kỹ năng đặc biệt", "effect": "Hiệu ứng đặc biệt riêng cho hero"},
+  "explore": {"name": "Thám hiểm", "effect": "Tăng tỉ lệ khám phá"},
+  "research": {"name": "Nghiên cứu", "effect": "Tăng tốc độ phát triển kingdom"},
+  "train": {"name": "Huấn luyện", "effect": "Tăng exp cho party"}
+}

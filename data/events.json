@@ -1,0 +1,219 @@
+{
+  "monster_attack": {
+    "name": "Quái vật tấn công",
+    "type": "battle",
+    "desc": "Một bầy quái vật tấn công ngôi làng!",
+    "trigger": {"kingdom_level": 1},
+    "effect": {"morale": -0.2, "gold": -100, "quest": "defend_village"}
+  },
+  "disaster_flood": {
+    "name": "Lũ lụt",
+    "type": "disaster",
+    "desc": "Lũ lụt cuốn trôi nhiều nhà cửa và ruộng đồng.",
+    "trigger": {"season": "summer"},
+    "effect": {"morale": -0.1, "gold": -50, "building": "farm", "event_chain": ["repair_farm"]}
+  },
+  "festival_spring": {
+    "name": "Lễ hội mùa xuân",
+    "type": "festival",
+    "desc": "Toàn bộ dân làng vui vẻ tham gia lễ hội mùa xuân.",
+    "trigger": {"season": "spring"},
+    "effect": {"morale": 0.2, "fame": 10}
+  },
+  "hero_arrival": {
+    "name": "Hero mới đến",
+    "type": "hero",
+    "desc": "Một hero huyền thoại đã đến vương quốc của bạn!",
+    "trigger": {"fame": 50},
+    "effect": {"add_hero": true}
+  },
+  "party_win": {
+    "name": "Party chiến thắng",
+    "type": "party",
+    "desc": "Party vừa đánh bại quái vật, mang về chiến lợi phẩm.",
+    "trigger": {"quest_complete": "slay_monster"},
+    "effect": {"gold": 200, "fame": 20, "morale": 0.1}
+  },
+  "party_loss": {
+    "name": "Party thất bại",
+    "type": "party",
+    "desc": "Một party thất bại trong nhiệm vụ, morale giảm mạnh.",
+    "trigger": {"quest_fail": true},
+    "effect": {"morale": -0.2}
+  },
+  "quest_found_treasure": {
+    "name": "Tìm thấy kho báu",
+    "type": "quest",
+    "desc": "Party phát hiện kho báu bí mật!",
+    "trigger": {"explore": true},
+    "effect": {"gold": 500, "event_chain": ["legendary_party"]}
+  },
+  "legendary_party": {
+    "name": "Party huyền thoại",
+    "type": "party",
+    "desc": "Một party trở thành huyền thoại sau chiến tích vĩ đại.",
+    "trigger": {"fame": 100},
+    "effect": {"morale": 0.5, "add_title": "legendary"}
+  },
+  "marriage": {
+    "name": "Đám cưới",
+    "type": "social",
+    "desc": "Hai dân làng kết hôn, tạo ra một gia đình mới.",
+    "trigger": {"relation": "love"},
+    "effect": {"morale": 0.05, "population": 1}
+  },
+  "birth": {
+    "name": "Sinh con",
+    "type": "social",
+    "desc": "Một em bé mới ra đời.",
+    "trigger": {"married": true},
+    "effect": {"population": 1}
+  },
+  "death": {
+    "name": "Qua đời",
+    "type": "social",
+    "desc": "Có một NPC đã qua đời.",
+    "trigger": {"sickness": true},
+    "effect": {"population": -1, "morale": -0.1}
+  },
+  "training_success": {
+    "name": "Huấn luyện thành công",
+    "type": "training",
+    "desc": "NPC đã hoàn thành khoá huấn luyện.",
+    "trigger": {"job": "train"},
+    "effect": {"exp": 20}
+  },
+  "training_fail": {
+    "name": "Huấn luyện thất bại",
+    "type": "training",
+    "desc": "NPC thất bại trong quá trình huấn luyện.",
+    "trigger": {"job": "train"},
+    "effect": {"morale": -0.05}
+  },
+  "job_change": {
+    "name": "Chuyển nghề",
+    "type": "job",
+    "desc": "NPC đã chuyển sang nghề mới.",
+    "trigger": {"level": 5},
+    "effect": {"new_job": true}
+  },
+  "research_discovery": {
+    "name": "Phát minh mới",
+    "type": "research",
+    "desc": "Kingdom vừa phát minh công nghệ mới.",
+    "trigger": {"research": 50},
+    "effect": {"kingdom_level": 1, "fame": 10}
+  },
+  "economy_boom": {
+    "name": "Kinh tế phát triển",
+    "type": "economy",
+    "desc": "Thu nhập và vàng tăng mạnh nhờ thương mại.",
+    "trigger": {"merchant": true},
+    "effect": {"gold": 300, "fame": 5}
+  },
+  "tax_collection": {
+    "name": "Thu thuế",
+    "type": "economy",
+    "desc": "Thuế được thu từ dân làng, tăng ngân sách.",
+    "trigger": {"season": "autumn"},
+    "effect": {"gold": 100}
+  },
+  "bandit_attack": {
+    "name": "Cướp tấn công",
+    "type": "battle",
+    "desc": "Băng đảng cướp tấn công, cần party phòng thủ.",
+    "trigger": {"gold": 1000},
+    "effect": {"morale": -0.1, "gold": -150, "quest": "defend_village"}
+  },
+  "rumor_spread": {
+    "name": "Tin đồn lan rộng",
+    "type": "social",
+    "desc": "Một tin đồn kỳ lạ lan khắp làng.",
+    "trigger": {"season": "any"},
+    "effect": {"morale": -0.05}
+  },
+  "party_dissolve": {
+    "name": "Party tan rã",
+    "type": "party",
+    "desc": "Một party do bất đồng đã tan rã.",
+    "trigger": {"party_conflict": true},
+    "effect": {"morale": -0.1}
+  },
+  "npc_sick": {
+    "name": "NPC bị bệnh",
+    "type": "sickness",
+    "desc": "Một NPC mắc bệnh, cần chữa trị.",
+    "trigger": {"season": "winter"},
+    "effect": {"morale": -0.05, "quest": "heal_npc"}
+  },
+  "heal_success": {
+    "name": "Chữa bệnh thành công",
+    "type": "sickness",
+    "desc": "NPC đã khỏi bệnh nhờ healer.",
+    "trigger": {"quest_complete": "heal_npc"},
+    "effect": {"morale": 0.05}
+  },
+  "heal_fail": {
+    "name": "Chữa bệnh thất bại",
+    "type": "sickness",
+    "desc": "NPC qua đời vì không được chữa trị.",
+    "trigger": {"quest_fail": "heal_npc"},
+    "effect": {"population": -1, "morale": -0.1}
+  },
+  "tournament_win": {
+    "name": "Chiến thắng giải đấu",
+    "type": "tournament",
+    "desc": "Hero vừa chiến thắng giải đấu lớn.",
+    "trigger": {"event": "tournament"},
+    "effect": {"fame": 30, "gold": 300}
+  },
+  "tournament_lose": {
+    "name": "Thua giải đấu",
+    "type": "tournament",
+    "desc": "Hero thua trận ở giải đấu.",
+    "trigger": {"event": "tournament"},
+    "effect": {"morale": -0.1}
+  },
+  "quest_new": {
+    "name": "Nhiệm vụ mới",
+    "type": "quest",
+    "desc": "Một nhiệm vụ mới xuất hiện.",
+    "trigger": {"season": "any"},
+    "effect": {"add_quest": true}
+  },
+  "quest_complete": {
+    "name": "Hoàn thành nhiệm vụ",
+    "type": "quest",
+    "desc": "Party vừa hoàn thành một nhiệm vụ.",
+    "trigger": {"quest_done": true},
+    "effect": {"gold": 100, "fame": 10}
+  },
+  "explore_discover": {
+    "name": "Khám phá mới",
+    "type": "explore",
+    "desc": "Party phát hiện vùng đất mới.",
+    "trigger": {"party_explore": true},
+    "effect": {"fame": 15, "kingdom_level": 1}
+  },
+  "party_return": {
+    "name": "Party trở về",
+    "type": "party",
+    "desc": "Party vừa trở về cùng kinh nghiệm và chiến lợi phẩm.",
+    "trigger": {"party_return": true},
+    "effect": {"exp": 10, "gold": 50}
+  },
+  "npc_levelup": {
+    "name": "NPC lên cấp",
+    "type": "progression",
+    "desc": "Một NPC đã lên cấp.",
+    "trigger": {"exp": 100},
+    "effect": {"level": 1, "morale": 0.05}
+  },
+  "building_complete": {
+    "name": "Hoàn thành công trình",
+    "type": "building",
+    "desc": "Một công trình vừa được hoàn thành.",
+    "trigger": {"build_done": true},
+    "effect": {"morale": 0.1, "gold": -200}
+  }
+}

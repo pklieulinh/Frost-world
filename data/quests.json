@@ -1,0 +1,20 @@
+{
+  "slay_monster": {
+    "name": "Tiêu diệt quái vật",
+    "desc": "Đánh bại quái vật đang quấy phá làng.",
+    "require": {"party": 1, "job": "soldier"},
+    "reward": {"gold": 150, "fame": 15, "exp": 30}
+  },
+  "defend_village": {
+    "name": "Bảo vệ làng",
+    "desc": "Phòng thủ trước làn sóng quái vật.",
+    "require": {"party": 1, "job": "soldier"},
+    "reward": {"gold": 120, "morale": 0.1, "exp": 25}
+  },
+  "find_treasure": {
+    "name": "Tìm kho báu",
+    "desc": "Party thám hiểm để tìm kho báu bí mật.",
+    "require": {"party": 1, "job": "explorer"},
+    "reward": {"gold": 300, "fame": 20, "exp": 40}
+  }
+}

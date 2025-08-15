@@ -1,0 +1,22 @@
+{
+  "house1": {"name": "Nhà Ariana", "type": "house", "level": 2, "owner": "npc1", "x": 3, "y": 4},
+  "house2": {"name": "Nhà Bran", "type": "house", "level": 3, "owner": "npc2", "x": 2, "y": 5},
+  "house3": {"name": "Nhà Clara", "type": "house", "level": 2, "owner": "npc3", "x": 4, "y": 4},
+  "house4": {"name": "Nhà Diana", "type": "house", "level": 2, "owner": "npc4", "x": 5, "y": 4},
+  "house5": {"name": "Nhà Eli", "type": "house", "level": 2, "owner": "npc5", "x": 4, "y": 5},
+  "house6": {"name": "Nhà Fenn", "type": "house", "level": 1, "owner": "npc6", "x": 2, "y": 6},
+  "house7": {"name": "Nhà Gale", "type": "house", "level": 1, "owner": "npc7", "x": 1, "y": 7},
+  "house8": {"name": "Nhà Hana", "type": "house", "level": 2, "owner": "npc8", "x": 3, "y": 8},
+  "house9": {"name": "Nhà Ivan", "type": "house", "level": 1, "owner": "npc9", "x": 5, "y": 8},
+  "house10": {"name": "Nhà Juna", "type": "house", "level": 1, "owner": "npc10", "x": 6, "y": 6},
+  "house11": {"name": "Nhà Karl", "type": "house", "level": 2, "owner": "npc11", "x": 8, "y": 5},
+  "house12": {"name": "Nhà Lina", "type": "house", "level": 1, "owner": "npc12", "x": 9, "y": 7},
+  "house13": {"name": "Nhà Milo", "type": "house", "level": 2, "owner": "npc13", "x": 7, "y": 2},
+  "house14": {"name": "Nhà Nina", "type": "house", "level": 1, "owner": "npc14", "x": 8, "y": 3},
+  "house15": {"name": "Nhà Odin", "type": "house", "level": 1, "owner": "npc15", "x": 9, "y": 9},
+  "inn1": {"name": "Nhà trọ Lớn", "type": "inn", "level": 2, "x": 6, "y": 4},
+  "farm1": {"name": "Nông trại Tây", "type": "farm", "level": 3, "x": 7, "y": 7},
+  "guild1": {"name": "Guild Adventurer", "type": "guild", "level": 2, "x": 10, "y": 2},
+  "shop1": {"name": "Cửa hàng Tổng hợp", "type": "shop", "level": 1, "x": 11, "y": 3},
+  "arena1": {"name": "Đấu trường lớn", "type": "arena", "level": 1, "x": 12, "y": 5}
+}

@@ -1,0 +1,7 @@
+{
+  "hero1": {"name": "Leon", "job": "hero", "level": 8, "exp": 120, "skills": ["lead", "combat", "special", "defend"], "rank": "A", "title": "Defender", "special": ["bravery", "shieldwall"], "reputation": 45, "party": "party2"},
+  "hero2": {"name": "Elise", "job": "hero", "level": 6, "exp": 90, "skills": ["magic", "heal", "lead"], "rank": "B", "title": "Sage", "special": ["wisdom"], "reputation": 32, "party": "party4"},
+  "hero3": {"name": "Garen", "job": "hero", "level": 5, "exp": 70, "skills": ["combat", "explore", "special"], "rank": "C", "title": "Scout", "special": ["eagleeye"], "reputation": 21, "party": "party1"},
+  "hero4": {"name": "Lyra", "job": "hero", "level": 7, "exp": 110, "skills": ["magic", "special", "craft"], "rank": "A", "title": "Artisan", "special": ["bless"], "reputation": 40, "party": "party3"},
+  "hero5": {"name": "Drax", "job": "hero", "level": 9, "exp": 140, "skills": ["combat", "lead", "heal", "special"], "rank": "S", "title": "Legend", "special": ["berserk"], "reputation": 60, "party": "party5"}
+}

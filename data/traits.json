@@ -1,0 +1,9 @@
+{
+    "hardworker": {"desc": "Chăm chỉ, năng suất cao."},
+    "friendly": {"desc": "Thân thiện, hòa đồng."},
+    "rebellious": {"desc": "Có xu hướng phản kháng."},
+    "charismatic": {"desc": "Có sức hút cá nhân."},
+    "lazy": {"desc": "Lười biếng, không thích làm việc."},
+    "innovator": {"desc": "Đề xuất nhiều ý tưởng mới."},
+    "conservative": {"desc": "Thích trật tự, ghét thay đổi."}
+}
