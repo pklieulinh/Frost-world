@@ -1,127 +1,141 @@
-import pygame
 import random
+from typing import List, Optional, Dict, Any, Tuple
 
-MAP_W = 64
-MAP_H = 48
-TILE_SIZE = 16
+class WorldTile:
+    __slots__ = ("x", "y", "type", "data")
 
-TILE_TYPES = [
-    ("village", (240,220,170)),
-    ("field", (170,220,120)),
-    ("forest", (60,120,60)),
-    ("dungeon", (80,80,120)),
-    ("road", (180,180,140)),
-    ("river", (80,180,240)),
-    ("building", (220,200,100)),
-    ("danger", (220,100,80)),
-    ("pending_build", (250,230,64))
-]
-
-class Tile:
-    def __init__(self, x, y, ttype="field"):
+    def __init__(self, x: int, y: int, tile_type: str = "grass", data: Optional[Dict[str, Any]] = None):
         self.x = x
         self.y = y
-        self.type = ttype
-        self.occupants = []
-        self.zone = ttype
-        self.pending_build = False
-        self.building_name = None
+        self.type = tile_type
+        self.data = data or {}
+
+    def is_buildable(self) -> bool:
+        if self.type in ("water", "mountain"):
+            return False
+        return not self.data.get("blocked", False)
+
+    def has_resource_stock(self) -> bool:
+        stock = self.data.get("resource_stock")
+        return isinstance(stock, int) and stock > 0
+
+    def harvest(self) -> Optional[str]:
+        stock = self.data.get("resource_stock")
+        if not isinstance(stock, int) or stock <= 0:
+            return None
+        rtype = self.data.get("resource_type")
+        if rtype not in ("wood", "stone"):
+            return None
+        self.data["resource_stock"] = stock - 1
+        if self.data["resource_stock"] <= 0:
+            # Deplete -> becomes grass
+            if self.type in ("forest", "mountain"):
+                self.type = "grass"
+            self.data.pop("resource_type", None)
+            self.data.pop("resource_stock", None)
+        return rtype
+
 
 class WorldMap:
-    def __init__(self):
-        self.w = MAP_W
-        self.h = MAP_H
-        self.tiles = [[Tile(x, y, self.gen_tiletype(x, y)) for y in range(self.h)] for x in range(self.w)]
+    MAX_SIZE = 77
+
+    def __init__(self, width: int = 77, height: int = 77, seed: Optional[int] = None, view_w: int = 48, view_h: int = 27):
+        width = max(4, min(self.MAX_SIZE, width))
+        height = max(4, min(self.MAX_SIZE, height))
+        self.width = width
+        self.height = height
+        self._seed = seed if seed is not None else random.randint(0, 10_000_000)
+        self.tiles: List[List[WorldTile]] = []
+        # Camera view window
+        self.view_w = min(view_w, self.width)
+        self.view_h = min(view_h, self.height)
         self.view_x = 0
         self.view_y = 0
-        self.view_w = 32
-        self.view_h = 24
+        self._generate()
 
-    def gen_tiletype(self, x, y):
-        # Làng ở giữa, rừng/dungeon ở rìa, river cắt dọc, road cắt ngang
-        cx, cy = MAP_W//2, MAP_H//2
-        if abs(x-cx)<3 and abs(y-cy)<2:
-            return "village"
-        elif (x in [0, self.w-1] or y in [0, self.h-1]):
-            return "forest" if (x+y)%2==0 else "dungeon"
-        elif (x in [1, self.w-2] or y in [1, self.h-2]):
-            return "danger"
-        elif (x==cx and y in range(cy-8, cy+8)):
-            return "river"
-        elif (abs(y-cy)<2):
-            return "road"
-        else:
-            return "field"
+    def _rng(self) -> random.Random:
+        return random.Random(self._seed)
 
-    def get_tile(self, x, y):
-        if 0 <= x < self.w and 0 <= y < self.h:
-            return self.tiles[x][y]
-        return None
-
-    def update_npc_positions(self, npcs):
-        for col in self.tiles:
-            for tile in col:
-                tile.occupants = []
-        for n in npcs:
-            tx, ty = int(n.x), int(n.y)
-            tile = self.get_tile(tx, ty)
-            if tile:
-                tile.occupants.append(n)
-
-    def npc_move_tick(self, npcs, build_queue):
-        for n in npcs:
-            # Nếu đang có lệnh xây thì đi theo lệnh
-            cmd = next((cmd for cmd in build_queue if cmd["npc"]==n), None)
-            if cmd and not cmd.get("pending_materials",False):
-                tx, ty = cmd["x"], cmd["y"]
-                if (n.x, n.y) != (tx, ty):
-                    n.state = "moving"
-                    n.build_target = (tx, ty)
-                    if n.x < tx: n.x += 1
-                    elif n.x > tx: n.x -= 1
-                    if n.y < ty: n.y += 1
-                    elif n.y > ty: n.y -= 1
+    def _generate(self):
+        rnd = self._rng()
+        self.tiles = []
+        for y in range(self.height):
+            row: List[WorldTile] = []
+            for x in range(self.width):
+                r = rnd.random()
+                if r < 0.045:
+                    t = "water"
+                elif r < 0.085:
+                    t = "mountain"
+                elif r < 0.15:
+                    t = "forest"
                 else:
-                    n.state = "building"
-            else:
-                for _ in range(3):
-                    dx, dy = random.choice([-1,0,1]), random.choice([-1,0,1])
-                    tx, ty = max(0,min(self.w-1,n.x+dx)), max(0,min(self.h-1,n.y+dy))
-                    t = self.get_tile(tx, ty)
-                    if t and t.type!="river" and not t.pending_build:
-                        n.x, n.y = tx, ty
-                        break
+                    t = "grass"
+                tile = WorldTile(x, y, t)
+                if t == "forest":
+                    tile.data["resource_type"] = "wood"
+                    tile.data["resource_stock"] = rnd.randint(4, 9)
+                elif t == "mountain":
+                    tile.data["resource_type"] = "stone"
+                    tile.data["resource_stock"] = rnd.randint(5, 12)
+                row.append(tile)
+            self.tiles.append(row)
 
-    def draw(self, screen, ox, oy, npcs, kingdom, build_queue):
-        for x in range(self.view_x, min(self.view_x+self.view_w, self.w)):
-            for y in range(self.view_y, min(self.view_y+self.view_h, self.h)):
-                tile = self.tiles[x][y]
-                color = dict(TILE_TYPES).get(tile.type, (200,200,200))
-                if tile.pending_build:
-                    color = dict(TILE_TYPES).get("pending_build",(250,230,64))
-                rect = pygame.Rect(ox+(x-self.view_x)*TILE_SIZE, oy+(y-self.view_y)*TILE_SIZE, TILE_SIZE, TILE_SIZE)
-                pygame.draw.rect(screen, color, rect)
-                pygame.draw.rect(screen, (50,50,60), rect, 1)
-                if tile.type == "building":
-                    pygame.draw.rect(screen, (120,80,10), rect.inflate(-4,-4))
-                if tile.pending_build:
-                    pygame.draw.rect(screen, (250,200,40), rect.inflate(-8,-8), border_radius=2)
-        # NPC
-        for n in npcs:
-            tx, ty = int(n.x), int(n.y)
-            if not (self.view_x <= tx < self.view_x+self.view_w and self.view_y <= ty < self.view_y+self.view_h): continue
-            px, py = ox+(tx-self.view_x)*TILE_SIZE, oy+(ty-self.view_y)*TILE_SIZE
-            color = (250,210,40) if getattr(n,"is_hero",False) else (90,180,255)
-            border = (255,120,40) if kingdom.leader_id==n.id else (50,60,70)
-            if getattr(n,"state","")== "building":
-                color = (220,140,50)
-            pygame.draw.rect(screen, color, (px+2,py+2,TILE_SIZE-4,TILE_SIZE-4))
-            pygame.draw.rect(screen, border, (px,py,TILE_SIZE,TILE_SIZE), 1)
-            label = n.name[0].upper()
-            font = pygame.font.SysFont("consolas", 12)
-            screen.blit(font.render(label, True, (10,30,40)), (px+TILE_SIZE//2-5, py+TILE_SIZE//2-7))
-            # Trạng thái
-            if getattr(n,"state","") == "building":
-                screen.blit(font.render("X",True,(130,30,0)), (px+TILE_SIZE//2-2, py+TILE_SIZE//2+1))
-            if getattr(n,"state","") == "moving":
-                screen.blit(font.render("D",True,(40,80,130)), (px+TILE_SIZE//2-2, py+TILE_SIZE//2+1))
+    def get_tile(self, x: int, y: int) -> Optional[WorldTile]:
+        if x < 0 or y < 0 or x >= self.width or y >= self.height:
+            return None
+        return self.tiles[y][x]
+
+    def in_bounds(self, x: int, y: int) -> bool:
+        return 0 <= x < self.width and 0 <= y < self.height
+
+    def all_positions_of_type(self, tile_type: str) -> List[Tuple[int, int]]:
+        out: List[Tuple[int, int]] = []
+        for y in range(self.height):
+            row = self.tiles[y]
+            for x in range(self.width):
+                if row[x].type == tile_type:
+                    out.append((x, y))
+        return out
+
+    def find_build_spot_near(self, targets: List[Tuple[int, int]], max_scan: int = 4000) -> Optional[Tuple[int, int]]:
+        if not targets:
+            return None
+        best: Optional[Tuple[int, int]] = None
+        best_dist = 10**9
+        scanned = 0
+        for y in range(self.height):
+            for x in range(self.width):
+                if scanned >= max_scan:
+                    return best
+                tile = self.tiles[y][x]
+                if tile.is_buildable() and tile.type != "house":
+                    md = min(abs(x - tx) + abs(y - ty) for (tx, ty) in targets)
+                    if md < best_dist:
+                        best_dist = md
+                        best = (x, y)
+                        if best_dist <= 1:
+                            return best
+                scanned += 1
+        return best
+
+    def clamp_camera(self):
+        if self.view_w > self.width:
+            self.view_w = self.width
+        if self.view_h > self.height:
+            self.view_h = self.height
+        self.view_x = max(0, min(self.view_x, self.width - self.view_w))
+        self.view_y = max(0, min(self.view_y, self.height - self.view_h))
+
+    def move_camera(self, dx: int, dy: int):
+        self.view_x += dx
+        self.view_y += dy
+        self.clamp_camera()
+
+    def center_on(self, x: int, y: int):
+        # Center view on (x,y)
+        cx = max(0, min(x, self.width - 1))
+        cy = max(0, min(y, self.height - 1))
+        self.view_x = cx - self.view_w // 2
+        self.view_y = cy - self.view_h // 2
+        self.clamp_camera()
