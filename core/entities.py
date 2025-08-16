@@ -1,132 +1,124 @@
-from typing import Optional, Dict, Any, Tuple, List
+from typing import List, Dict, Optional
+import uuid
 import random
 
-def clamp_int(v: int, lo: int, hi: int) -> int:
-    return lo if v < lo else hi if v > hi else v
+class Role:
+    SECT_LEADER = "Tông Chủ"
+    ELDER = "Trưởng Lão"
+    DISCIPLE = "Đệ Tử"
+    OUTSIDER = "Ngoại Nhân"
 
-class NPC:
-    __slots__ = (
-        "npc_id","name","x","y","hp","hp_max","role","state","task","task_progress",
-        "speed","alive","destination","task_target","pending_resources"
-    )
+class Division:
+    FORGE_HALL = "Luyện Khí Các"
+    PHARMACY_HALL = "Dược Vương Điện"
+    SHADOW_HALL = "Ám Ảnh Các"
+    LAW_HALL = "Chấp Pháp Đường"
+    DEFENSE_HALL = "Hộ Sơn Đường"
+    SCOUT = "Trinh Sát"
+    GUARD = "Cảnh Giới"
+    LOGISTICS = "Tổng Quản"
+    WORKER = "Công Tượng"
 
-    def __init__(self, npc_id: int, name: str, x: int, y: int, is_leader=False):
-        self.npc_id = npc_id
-        self.name = name or f"NPC{npc_id}"
-        self.x = x
-        self.y = y
-        self.hp_max = 100
-        self.hp = self.hp_max
-        self.role = "leader" if is_leader else "idle"
-        self.state = "idle"
-        self.task: Optional[Dict[str, Any]] = None
-        self.task_progress = 0.0
-        self.speed = 3.0
+DEFAULT_MAP_W = 64
+DEFAULT_MAP_H = 48
+
+class SectMember:
+    def __init__(self, name: str, role: str = Role.DISCIPLE, division: str = "", is_founder: bool = False, x: Optional[int]=None, y: Optional[int]=None):
+        self.id = str(uuid.uuid4())
+        self.name = name
+        self.role = role
+        self.division = division
+        self.is_founder = is_founder
         self.alive = True
-        self.destination: Optional[Tuple[int,int]] = None
-        self.task_target: Optional[Tuple[int,int]] = None
-        self.pending_resources: List[Tuple[str,int]] = []
-
-    def assign_role(self, new_role: str):
-        # Leader không bị đổi role
-        if self.role == "leader":
-            return
-        self.role = new_role
-
-    def start_task(self, task: Dict[str, Any]):
-        self.task = task
-        self.state = "working"
-        self.task_progress = 0.0
-        pos = task.get("data", {}).get("pos")
-        if pos and isinstance(pos,(tuple,list)) and len(pos)==2:
-            self.task_target = (int(pos[0]), int(pos[1]))
-            self.destination = self.task_target
-        else:
-            self.task_target = None
-            self.destination = None
-
-    def complete_task(self):
-        self.task = None
+        self.loyalty = 100
+        self.skills: Dict[str, int] = {}
+        self.memory: List[str] = []
+        self.current_task: Optional[str] = None
         self.state = "idle"
-        self.task_progress = 0.0
-        self.destination = None
-        self.task_target = None
+        self.build_target = None
+        # Vị trí trên bản đồ, random hoặc truyền vào
+        self.x = x if x is not None else random.randint(0, DEFAULT_MAP_W-1)
+        self.y = y if y is not None else random.randint(0, DEFAULT_MAP_H-1)
 
-    def fail_task(self):
-        self.task = None
-        self.state = "idle"
-        self.task_progress = 0.0
-        self.destination = None
-        self.task_target = None
+    def receive_command(self, command: str):
+        if self.alive:
+            self.memory.append(command)
 
-    def update(self, dt: float, world):
-        if not self.alive or dt <= 0:
-            return
-        self._update_position(world)
-        if self.task:
-            ttype = self.task.get("type")
-            if ttype in ("gather","build_house","scout_explore","patrol"):
-                self._process_task(dt, world)
+    def assign_task(self, task: str):
+        self.current_task = task
 
-    def _update_position(self, world):
-        if not self.destination:
-            return
-        tx, ty = self.destination
-        if self.x == tx and self.y == ty:
-            self.destination = None
-            return
-        dx = tx - self.x
-        dy = ty - self.y
-        if abs(dx) + abs(dy) == 0:
-            self.destination = None
-            return
-        # Step (simple 4-dir)
-        if random.random() < 0.5:
-            step = (1 if dx > 0 else -1, 0) if dx != 0 else (0, 1 if dy > 0 else -1)
-        else:
-            step = (0, 1 if dy > 0 else -1) if dy != 0 else (1 if dx > 0 else -1, 0)
-        nx = clamp_int(self.x + step[0], 0, world.width - 1)
-        ny = clamp_int(self.y + step[1], 0, world.height - 1)
-        tile = world.get_tile(nx, ny)
-        if tile and tile.type not in ("water","mountain"):
-            self.x, self.y = nx, ny
-        else:
-            # Try alternate
-            alt = (step[1], step[0])
-            nx2 = clamp_int(self.x + alt[0], 0, world.width - 1)
-            ny2 = clamp_int(self.y + alt[1], 0, world.height - 1)
-            tile2 = world.get_tile(nx2, ny2)
-            if tile2 and tile2.type not in ("water","mountain"):
-                self.x, self.y = nx2, ny2
-            else:
-                self.destination = None  # stuck
+    def __repr__(self):
+        alive_str = " [Đã chết]" if not self.alive else ""
+        return f"{self.name} ({self.role}) [{self.division}]{' [Khai Sơn Đệ Tử]' if self.is_founder else ''}{alive_str}"
 
-    def _process_task(self, dt: float, world):
-        if self.task_target:
-            if self.x != self.task_target[0] or self.y != self.task_target[1]:
-                return
-        diff = self.task.get("difficulty", 1.0)
-        if diff <= 0:
-            diff = 1.0
-        self.task_progress += (dt * self.speed) / diff
-        if self.task_progress < 1.0:
-            return
-        ttype = self.task.get("type")
-        data = self.task.get("data", {})
-        if ttype == "build_house":
-            tile = world.get_tile(self.x, self.y)
-            if tile and tile.is_buildable():
-                tile.type = "house"
-                tile.data.pop("resource_type", None)
-                tile.data.pop("resource_stock", None)
-        elif ttype == "gather":
-            tile = world.get_tile(self.x, self.y)
-            # gather fail nếu tile không còn resource
-            if not tile or not tile.has_resource_stock():
-                self.fail_task()
-                return
-            harvested = tile.harvest()
-            if harvested:
-                self.pending_resources.append((harvested, 1))
-        # scout_explore / patrol: nothing special
-        self.complete_task()
+class Sect:
+    def __init__(self, name: str, founder: str):
+        self.name = name
+        self.members: Dict[str, SectMember] = {}
+        self.founder_id = None
+        self.timeline_stage = 1
+        self.history: List[str] = []
+        self.sect_commands: List[str] = []
+        self.resources: Dict[str, int] = {"water": 10, "food": 10, "farm_land": 1, "tools": 2, "money": 5}
+        self.famous = False
+        self.holy_site = False
+        self.add_member(founder, Role.SECT_LEADER, "", is_founder=True)
+
+    def add_member(self, name, role, division, is_founder=False, x=None, y=None):
+        member = SectMember(name, role, division, is_founder, x, y)
+        self.members[member.id] = member
+        if is_founder and not self.founder_id:
+            self.founder_id = member.id
+        self.history.append(f"Đưa {name} ({role}) vào tông môn ở {division}.")
+        return member.id
+
+    def remove_member(self, member_id):
+        if member_id in self.members:
+            self.members[member_id].alive = False
+            self.history.append(f"{self.members[member_id].name} đã rời khỏi tông môn hoặc đã chết.")
+
+    def get_leader(self) -> Optional[SectMember]:
+        for m in self.members.values():
+            if m.role == Role.SECT_LEADER and m.alive:
+                return m
+        return None
+
+    def issue_command(self, command: str):
+        leader = self.get_leader()
+        if leader:
+            leader.receive_command(command)
+            self.sect_commands.append(command)
+            self.history.append(f"Tông Chủ ban lệnh: {command}")
+
+    def leader_assign(self, task: str):
+        leader = self.get_leader()
+        if leader:
+            leader.assign_task(task)
+            self.history.append(f"Tông Chủ nhận nhiệm vụ: {task}")
+
+    def get_resource(self, resource: str) -> int:
+        return self.resources.get(resource, 0)
+
+    def set_resource(self, resource: str, value: int):
+        self.resources[resource] = value
+
+    def get_population(self) -> int:
+        return sum(1 for m in self.members.values() if m.alive)
+
+    def is_famous(self) -> bool:
+        return self.famous
+
+    def set_famous(self, val: bool):
+        self.famous = val
+
+    def has_holy_site(self) -> bool:
+        return self.holy_site
+
+    def set_holy_site(self, val: bool):
+        self.holy_site = val
+
+    def __repr__(self):
+        leader = self.get_leader()
+        return (f"Tông môn {self.name} do {leader.name if leader else 'Không rõ'} lãnh đạo\n"
+                f"Số thành viên: {self.get_population()}\n"
+                f"Giai đoạn phát triển: {self.timeline_stage}/5")
